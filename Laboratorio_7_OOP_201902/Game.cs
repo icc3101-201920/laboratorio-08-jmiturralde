@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 
 namespace Laboratorio_7_OOP_201902
 {
@@ -138,12 +139,18 @@ namespace Laboratorio_7_OOP_201902
                 //turno 0 o configuracion
                 if (turn == 0)
                 {
+                    int uploadField = 0;
+
                     //Cargar partida despues de turno 0
                     Visualization.ShowListOptions(saved, "Do you wish to ulpoad an existing game?");
                     int answer = Visualization.GetUserInput(1);
-                    string curFile = @"C:\Users\Yiyo\Desktop\laboratorio - 08 - jmiturralde\Laboratorio_7_OOP_201902\bin\Debug\netcoreapp2.1\Player1Captain.bin";
-                    if (answer == 0)
+                    string curFile = @"C:\Users\Yiyo\Desktop\laboratorio-08-jmiturralde\Laboratorio_7_OOP_201902\bin\Debug\netcoreapp2.1\Player1Captain.bin";
+                    string curFile1 = @"C:\Users\Yiyo\Desktop\laboratorio-08-jmiturralde\Laboratorio_7_OOP_201902\bin\Debug\netcoreapp2.1\Player1Cards.bin";
+                    string curFile2 = @"C:\Users\Yiyo\Desktop\laboratorio-08-jmiturralde\Laboratorio_7_OOP_201902\bin\Debug\netcoreapp2.1\Player2Captain.bin";
+                    string curFile3 = @"C:\Users\Yiyo\Desktop\laboratorio-08-jmiturralde\Laboratorio_7_OOP_201902\bin\Debug\netcoreapp2.1\Player2Cards.bin";
+                    if (answer == 0 && File.Exists(curFile) && File.Exists(curFile1) && File.Exists(curFile2) && File.Exists(curFile3) )
                     {
+                        Console.Clear();
                         IFormatter formatter1 = new BinaryFormatter();
                         Stream streamm = new FileStream("Player1Cards.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
                         Stream streamm1 = new FileStream("Player1Captain.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -161,60 +168,83 @@ namespace Laboratorio_7_OOP_201902
                         Players[0].Captain = captain1;
                         Players[1].Hand = cards2;
                         Players[1].Captain = captain2;
+                        Console.WriteLine("INFORMATION OF PLAYER 1");
                         Visualization.ShowHand(Players[0].Hand);
                         Console.WriteLine("");
-                        Console.WriteLine($"Player 1 captain: {Players[0].Captain.Name}");
+                        Console.WriteLine($"Player captain: {Players[0].Captain.Name}");
                         Console.WriteLine("");
-                        Visualization.ShowHand(Players[0].Hand);
+                        Console.WriteLine("INFORMATION OF PLAYER 2");
+                        Visualization.ShowHand(Players[1].Hand);
                         Console.WriteLine("");
-                        Console.WriteLine($"Player 2 captain: {Players[1].Captain.Name}");
+                        Console.WriteLine($"Player captain: {Players[1].Captain.Name}");
                         Console.WriteLine("");
+                        Console.WriteLine("Press any key to start playing");
                         Console.ReadKey();
-
-
-                    } 
-
-
-                    for (int _ = 0; _<Players.Length; _++)
+                        uploadField = 1;
+                    }
+                    else
                     {
-                        ActivePlayer = Players[firstOrSecondUser];
-                        Visualization.ClearConsole();
-                        //Mostrar mensaje de inicio
-                        Visualization.ShowProgramMessage($"Player {ActivePlayer.Id+1} select Deck and Captain:");
-                        //Preguntar por deck
-                        Visualization.ShowDecks(this.Decks);
-                        userInput = Visualization.GetUserInput(this.Decks.Count - 1);
-                        Deck deck = new Deck();
-                        deck.Cards = new List<Card>(Decks[userInput].Cards);
-                        ActivePlayer.Deck = deck;
-                        //Preguntar por capitan
-                        Visualization.ShowCaptains(Captains);
-                        userInput = Visualization.GetUserInput(this.Captains.Count - 1);
-                        ActivePlayer.ChooseCaptainCard(new SpecialCard(Captains[userInput].Name, Captains[userInput].Type, Captains[userInput].Effect));
-                        //Asignar mano
-                        ActivePlayer.FirstHand();
-                        //Mostrar mano
-                        Visualization.ShowHand(ActivePlayer.Hand);
-                        //Mostar opciones, cambiar carta o pasar
-                        Visualization.ShowListOptions(new List<string>() { "Change Card", "Pass" }, "Change 3 cards or ready to play:");
-                        userInput = Visualization.GetUserInput(1);
-                        if (userInput == 0)
+                        if (answer == 0)
                         {
-                            Visualization.ClearConsole();
-                            Visualization.ShowProgramMessage($"Player {ActivePlayer.Id+1} change cards:");
-                            Visualization.ShowHand(ActivePlayer.Hand);
-                            for (int i = 0; i < DEFAULT_CHANGE_CARDS_NUMBER; i++)
-                            {
-                                Visualization.ShowProgramMessage($"Input the numbers of the cards to change (max {DEFAULT_CHANGE_CARDS_NUMBER}). To stop enter -1");
-                                userInput = Visualization.GetUserInput(ActivePlayer.Hand.Cards.Count, true);
-                                if (userInput == -1) break;
-                                ActivePlayer.ChangeCard(userInput);
-                                Visualization.ShowHand(ActivePlayer.Hand);
-                            }
+                            Visualization.ConsoleError("There was no infomation of a saved game to be use");
+                            Thread.Sleep(2500);
+                            Console.Clear();
+                            Visualization.ShowProgramMessage("Players get ready to play");
+                            Thread.Sleep(2500);
+                            Console.Clear();
                         }
-                        firstOrSecondUser = ActivePlayer.Id == 0 ? 1 : 0;
+                        else
+                        {
+                            Visualization.ShowProgramMessage("Players get ready to play");
+                            Thread.Sleep(2500);
+                            Console.Clear();
+                        }
+                    }
+
+                    if (uploadField != 1)
+                    {
+                        for (int _ = 0; _ < Players.Length; _++)
+                        {
+                            ActivePlayer = Players[firstOrSecondUser];
+                            Visualization.ClearConsole();
+                            //Mostrar mensaje de inicio
+                            Visualization.ShowProgramMessage($"Player {ActivePlayer.Id + 1} select Deck and Captain:");
+                            //Preguntar por deck
+                            Visualization.ShowDecks(this.Decks);
+                            userInput = Visualization.GetUserInput(this.Decks.Count - 1);
+                            Deck deck = new Deck();
+                            deck.Cards = new List<Card>(Decks[userInput].Cards);
+                            ActivePlayer.Deck = deck;
+                            //Preguntar por capitan
+                            Visualization.ShowCaptains(Captains);
+                            userInput = Visualization.GetUserInput(this.Captains.Count - 1);
+                            ActivePlayer.ChooseCaptainCard(new SpecialCard(Captains[userInput].Name, Captains[userInput].Type, Captains[userInput].Effect));
+                            //Asignar mano
+                            ActivePlayer.FirstHand();
+                            //Mostrar mano
+                            Visualization.ShowHand(ActivePlayer.Hand);
+                            //Mostar opciones, cambiar carta o pasar
+                            Visualization.ShowListOptions(new List<string>() { "Change Card", "Pass" }, "Change 3 cards or ready to play:");
+                            userInput = Visualization.GetUserInput(1);
+                            if (userInput == 0)
+                            {
+                                Visualization.ClearConsole();
+                                Visualization.ShowProgramMessage($"Player {ActivePlayer.Id + 1} change cards:");
+                                Visualization.ShowHand(ActivePlayer.Hand);
+                                for (int i = 0; i < DEFAULT_CHANGE_CARDS_NUMBER; i++)
+                                {
+                                    Visualization.ShowProgramMessage($"Input the numbers of the cards to change (max {DEFAULT_CHANGE_CARDS_NUMBER}). To stop enter -1");
+                                    userInput = Visualization.GetUserInput(ActivePlayer.Hand.Cards.Count, true);
+                                    if (userInput == -1) break;
+                                    ActivePlayer.ChangeCard(userInput);
+                                    Visualization.ShowHand(ActivePlayer.Hand);
+                                }
+                            }
+                            firstOrSecondUser = ActivePlayer.Id == 0 ? 1 : 0;
+                        }
                     }
                     turn += 1;
+
                     //Guardado de partida desues de turno 0
                     IFormatter formatter = new BinaryFormatter();
                     Stream stream = new FileStream("Player1Cards.bin", FileMode.Create, FileAccess.Write, FileShare.None);
