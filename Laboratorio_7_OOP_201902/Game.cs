@@ -127,6 +127,9 @@ namespace Laboratorio_7_OOP_201902
             int firstOrSecondUser = ActivePlayer.Id == 0 ? 0 : 1;
             int winner = -1;
             bool bothPlayersPlayed = false;
+            List<string> saved = new List<string>();
+            saved.Add("Yes");
+            saved.Add("No");
             
 
             while (turn < 4 && !CheckIfEndGame())
@@ -135,6 +138,42 @@ namespace Laboratorio_7_OOP_201902
                 //turno 0 o configuracion
                 if (turn == 0)
                 {
+                    //Cargar partida despues de turno 0
+                    Visualization.ShowListOptions(saved, "Do you wish to ulpoad an existing game?");
+                    int answer = Visualization.GetUserInput(1);
+                    if (answer == 0)
+                    {
+                        IFormatter formatter1 = new BinaryFormatter();
+                        Stream streamm = new FileStream("Player1Cards", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm1 = new FileStream("Player1Captain", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm2 = new FileStream("Player2Cards", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm3 = new FileStream("Player2Captain", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Hand cards1 = (Hand)formatter1.Deserialize(streamm);
+                        SpecialCard captain1 = (SpecialCard)formatter1.Deserialize(streamm);
+                        Hand cards2 = (Hand)formatter1.Deserialize(streamm);
+                        SpecialCard captain2 = (SpecialCard)formatter1.Deserialize(streamm);
+                        streamm.Close();
+                        streamm1.Close();
+                        streamm2.Close();
+                        streamm3.Close();
+                        Players[0].Hand = cards1;
+                        Players[0].Captain = captain1;
+                        Players[1].Hand = cards2;
+                        Players[1].Captain = captain2;
+                        Visualization.ShowHand(Players[0].Hand);
+                        Console.WriteLine("");
+                        Visualization.ShowHand(Players[].Hand);
+                        Console.WriteLine("");
+                        Visualization.ShowHand(Players[0].Hand);
+                        Console.WriteLine("");
+                        Visualization.ShowHand(Players[0].Hand);
+                        Console.WriteLine("");
+                        Console.ReadKey();
+
+
+                    } 
+
+
                     for (int _ = 0; _<Players.Length; _++)
                     {
                         ActivePlayer = Players[firstOrSecondUser];
