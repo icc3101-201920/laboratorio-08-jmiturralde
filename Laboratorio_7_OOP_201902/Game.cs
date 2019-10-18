@@ -149,9 +149,9 @@ namespace Laboratorio_7_OOP_201902
                         Stream streamm2 = new FileStream("Player2Cards", FileMode.Open, FileAccess.Read, FileShare.Read);
                         Stream streamm3 = new FileStream("Player2Captain", FileMode.Open, FileAccess.Read, FileShare.Read);
                         Hand cards1 = (Hand)formatter1.Deserialize(streamm);
-                        SpecialCard captain1 = (SpecialCard)formatter1.Deserialize(streamm);
-                        Hand cards2 = (Hand)formatter1.Deserialize(streamm);
-                        SpecialCard captain2 = (SpecialCard)formatter1.Deserialize(streamm);
+                        SpecialCard captain1 = (SpecialCard)formatter1.Deserialize(streamm1);
+                        Hand cards2 = (Hand)formatter1.Deserialize(streamm2);
+                        SpecialCard captain2 = (SpecialCard)formatter1.Deserialize(streamm3);
                         streamm.Close();
                         streamm1.Close();
                         streamm2.Close();
@@ -162,11 +162,11 @@ namespace Laboratorio_7_OOP_201902
                         Players[1].Captain = captain2;
                         Visualization.ShowHand(Players[0].Hand);
                         Console.WriteLine("");
-                        Visualization.ShowHand(Players[].Hand);
+                        Console.WriteLine($"Player 1 captain: {Players[0].Captain.Name}");
                         Console.WriteLine("");
                         Visualization.ShowHand(Players[0].Hand);
                         Console.WriteLine("");
-                        Visualization.ShowHand(Players[0].Hand);
+                        Console.WriteLine($"Player 2 captain: {Players[1].Captain.Name}");
                         Console.WriteLine("");
                         Console.ReadKey();
 
