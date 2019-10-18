@@ -141,13 +141,14 @@ namespace Laboratorio_7_OOP_201902
                     //Cargar partida despues de turno 0
                     Visualization.ShowListOptions(saved, "Do you wish to ulpoad an existing game?");
                     int answer = Visualization.GetUserInput(1);
+                    string curFile = @"C:\Users\Yiyo\Desktop\laboratorio - 08 - jmiturralde\Laboratorio_7_OOP_201902\bin\Debug\netcoreapp2.1\Player1Captain.bin";
                     if (answer == 0)
                     {
                         IFormatter formatter1 = new BinaryFormatter();
-                        Stream streamm = new FileStream("Player1Cards", FileMode.Open, FileAccess.Read, FileShare.Read);
-                        Stream streamm1 = new FileStream("Player1Captain", FileMode.Open, FileAccess.Read, FileShare.Read);
-                        Stream streamm2 = new FileStream("Player2Cards", FileMode.Open, FileAccess.Read, FileShare.Read);
-                        Stream streamm3 = new FileStream("Player2Captain", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm = new FileStream("Player1Cards.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm1 = new FileStream("Player1Captain.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm2 = new FileStream("Player2Cards.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
+                        Stream streamm3 = new FileStream("Player2Captain.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
                         Hand cards1 = (Hand)formatter1.Deserialize(streamm);
                         SpecialCard captain1 = (SpecialCard)formatter1.Deserialize(streamm1);
                         Hand cards2 = (Hand)formatter1.Deserialize(streamm2);
@@ -216,10 +217,10 @@ namespace Laboratorio_7_OOP_201902
                     turn += 1;
                     //Guardado de partida desues de turno 0
                     IFormatter formatter = new BinaryFormatter();
-                    Stream stream = new FileStream("Player1Cards", FileMode.Create, FileAccess.Write, FileShare.None);
-                    Stream stream1 = new FileStream("Player1Captain", FileMode.Create, FileAccess.Write, FileShare.None);
-                    Stream stream2 = new FileStream("Player2Cards", FileMode.Create, FileAccess.Write, FileShare.None);
-                    Stream stream3 = new FileStream("Player2Captain", FileMode.Create, FileAccess.Write, FileShare.None);
+                    Stream stream = new FileStream("Player1Cards.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+                    Stream stream1 = new FileStream("Player1Captain.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+                    Stream stream2 = new FileStream("Player2Cards.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+                    Stream stream3 = new FileStream("Player2Captain.bin", FileMode.Create, FileAccess.Write, FileShare.None);
                     formatter.Serialize(stream, Players[0].Hand);
                     formatter.Serialize(stream1, Players[0].Captain);
                     formatter.Serialize(stream2, Players[1].Hand);
