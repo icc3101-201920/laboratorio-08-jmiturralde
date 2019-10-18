@@ -164,10 +164,25 @@ namespace Laboratorio_7_OOP_201902
                         streamm1.Close();
                         streamm2.Close();
                         streamm3.Close();
+
+
                         Players[0].Hand = cards1;
                         Players[0].Captain = captain1;
                         Players[1].Hand = cards2;
                         Players[1].Captain = captain2;
+
+                        Deck deck1 = new Deck();
+                        deck1.Cards = new List<Card>(Players[0].Hand.Cards);
+                        Players[0].Deck = deck1;
+                        Players[0].ChooseCaptainCard(new SpecialCard(Players[0].Captain.Name, Players[0].Captain.Type, Players[0].Captain.Effect));
+
+                        Deck deck2 = new Deck();
+                        deck2.Cards = new List<Card>(Players[1].Hand.Cards);
+                        Players[1].Deck = deck2;
+                        Players[1].ChooseCaptainCard(new SpecialCard(Players[1].Captain.Name, Players[1].Captain.Type, Players[1].Captain.Effect));
+
+
+
                         Console.WriteLine("INFORMATION OF PLAYER 1");
                         Visualization.ShowHand(Players[0].Hand);
                         Console.WriteLine("");
